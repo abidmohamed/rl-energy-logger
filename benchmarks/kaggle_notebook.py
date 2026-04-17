@@ -2,26 +2,18 @@
 Kaggle Notebook Script — RL Energy Benchmark
 =============================================
 
-Copy-paste each cell block into a Kaggle notebook.
+Copy-paste each cell block into separate Kaggle notebook cells.
 Enable GPU T4 accelerator before running.
-
-Prerequisites:
-- Upload the rl-energy-logger repo as a Kaggle dataset
-  (the dataset will appear at /kaggle/input/rl-energy-logger/)
 """
 
 # ===========================================================================
-# Cell 1: Setup — install dependencies and copy repo
+# Cell 1: Setup — install dependencies and clone repo
 # ===========================================================================
 
-# Install swig first (needed to build box2d-py for BipedalWalker)
-# Then install SB3 with box2d support, and other deps
 # !apt-get install -y swig > /dev/null 2>&1
 # !pip install -q "stable-baselines3[extra]>=2.0.0" "gymnasium[box2d]" codecarbon matplotlib
-
-# Copy repo from read-only input to working directory (editable install needs write access)
-# !cp -r /kaggle/input/rl-energy-logger /kaggle/working/rl-energy-logger-src
-# !pip install -q -e /kaggle/working/rl-energy-logger-src
+# !git clone https://github.com/abidmohamed/rl-energy-logger.git /kaggle/working/rl-energy-logger
+# !pip install -q -e /kaggle/working/rl-energy-logger
 
 # ===========================================================================
 # Cell 2: Verify GPU and imports
@@ -49,12 +41,11 @@ print("\nAll imports successful!")
 import os
 import sys
 
-# Add the working copy to path
-sys.path.insert(0, "/kaggle/working/rl-energy-logger-src")
+sys.path.insert(0, "/kaggle/working/rl-energy-logger")
 
 from benchmarks.run_benchmark import main as run_benchmark_main
 
-# Run full benchmark (or uncomment --dry-run for quick test)
+# Full run (or uncomment --dry-run for quick test)
 sys.argv = ["run_benchmark.py"]
 # sys.argv = ["run_benchmark.py", "--dry-run"]  # Uncomment for quick test
 run_benchmark_main()
@@ -66,7 +57,7 @@ run_benchmark_main()
 from benchmarks.run_overhead import main as run_overhead_main
 
 sys.argv = ["run_overhead.py"]
-# sys.argv = ["run_overhead.py", "--dry-run"]  # Uncomment for quick test
+# sys.argv = ["run_overhead.py", "--dry-run"]
 run_overhead_main()
 
 # ===========================================================================
