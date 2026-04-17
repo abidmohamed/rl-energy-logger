@@ -23,6 +23,9 @@ import sys
 import time
 import warnings
 
+# Suppress SB3 warning about MlpPolicy on GPU — we intentionally use GPU for energy benchmarking
+warnings.filterwarnings("ignore", message=".*GPU.*primarily intended to run on the CPU.*")
+
 import gymnasium as gym
 from stable_baselines3 import PPO, A2C, DQN, SAC, TD3
 from stable_baselines3.common.evaluation import evaluate_policy

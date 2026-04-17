@@ -112,7 +112,9 @@ if _SB3_FOUND:
                 if self.log_rl_metrics and self.logger is not None:
                     # Access the internal key-value store of the SB3 logger
                     # We typically want the latest mean/median values
-                    for key, (value, _) in self.logger.name_to_value.items():
+                    for key, entry in self.logger.name_to_value.items():
+                         # SB3 v1.x stores (value, excluded), v2.x stores just value
+                         value = entry[0] if isinstance(entry, tuple) else entry
                          # Exclude SB3 internal time metrics if desired, as we have our own
                          if key.startswith("time/"):
                              continue

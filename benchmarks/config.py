@@ -19,7 +19,7 @@ ENVIRONMENTS = {
         "timesteps": 100_000,
         "eval_episodes": 10,
     },
-    "LunarLander-v2": {
+    "LunarLander-v3": {
         "action_space": "discrete",
         "timesteps": 200_000,
         "eval_episodes": 10,
@@ -53,7 +53,7 @@ ALGO_ACTION_SPACE = {
 SEEDS = [42, 123, 456]
 SAMPLING_INTERVAL_S = 1.0       # Hardware sampling interval (seconds)
 CO2_REGION = "world"            # Carbon intensity region for CO2 estimation
-DEVICE = "auto"                 # "auto" lets SB3 choose (GPU if available)
+DEVICE = "auto"                 # Use GPU when available (we're benchmarking GPU energy)
 
 # ---------------------------------------------------------------------------
 # Output paths
