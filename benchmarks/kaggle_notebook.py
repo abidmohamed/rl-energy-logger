@@ -2,26 +2,26 @@
 Kaggle Notebook Script — RL Energy Benchmark
 =============================================
 
-Copy-paste this into a Kaggle notebook cell (with GPU T4 accelerator enabled)
-to run the full benchmark.
+Copy-paste each cell block into a Kaggle notebook.
+Enable GPU T4 accelerator before running.
 
-Steps:
-1. Upload the rl-energy-logger repo as a Kaggle dataset
-2. Create a new notebook, enable GPU T4 accelerator
-3. Paste this script into a cell and run
-4. Download benchmark_results/ when complete
+Prerequisites:
+- Upload the rl-energy-logger repo as a Kaggle dataset
+  (the dataset will appear at /kaggle/input/rl-energy-logger/)
 """
 
 # ===========================================================================
-# Cell 1: Setup — install dependencies
+# Cell 1: Setup — install dependencies and copy repo
 # ===========================================================================
 
-# !pip install -q stable-baselines3[extra] gymnasium[box2d] codecarbon matplotlib
+# Install swig first (needed to build box2d-py for BipedalWalker)
+# Then install SB3 with box2d support, and other deps
+# !apt-get install -y swig > /dev/null 2>&1
+# !pip install -q "stable-baselines3[extra]>=2.0.0" "gymnasium[box2d]" codecarbon matplotlib
 
-# If uploaded as dataset (adjust path as needed):
-# import sys
-# sys.path.insert(0, "/kaggle/input/rl-energy-logger")
-# !pip install -e /kaggle/input/rl-energy-logger
+# Copy repo from read-only input to working directory (editable install needs write access)
+# !cp -r /kaggle/input/rl-energy-logger /kaggle/working/rl-energy-logger-src
+# !pip install -q -e /kaggle/working/rl-energy-logger-src
 
 # ===========================================================================
 # Cell 2: Verify GPU and imports
@@ -49,17 +49,13 @@ print("\nAll imports successful!")
 import os
 import sys
 
-# Make sure we can import benchmarks module
-sys.path.insert(0, os.path.dirname(os.path.abspath(".")))
+# Add the working copy to path
+sys.path.insert(0, "/kaggle/working/rl-energy-logger-src")
 
 from benchmarks.run_benchmark import main as run_benchmark_main
-from benchmarks.config import get_full_matrix
 
-matrix = get_full_matrix()
-print(f"Running {len(matrix)} experiments...")
-
-# Run with sys.argv override
-sys.argv = ["run_benchmark.py"]  # Full run
+# Run full benchmark (or uncomment --dry-run for quick test)
+sys.argv = ["run_benchmark.py"]
 # sys.argv = ["run_benchmark.py", "--dry-run"]  # Uncomment for quick test
 run_benchmark_main()
 
@@ -70,6 +66,7 @@ run_benchmark_main()
 from benchmarks.run_overhead import main as run_overhead_main
 
 sys.argv = ["run_overhead.py"]
+# sys.argv = ["run_overhead.py", "--dry-run"]  # Uncomment for quick test
 run_overhead_main()
 
 # ===========================================================================
@@ -90,10 +87,10 @@ from benchmarks.plot_results import main as plot_main
 sys.argv = ["plot_results.py"]
 plot_main()
 
-print("\n✅ All done! Download benchmark_results/ for the data and figures.")
+print("\nAll done! Download benchmark_results/ for the data and figures.")
 
 # ===========================================================================
-# Cell 7: Display figures inline (optional)
+# Cell 7: Display figures inline
 # ===========================================================================
 
 from IPython.display import display, Image
@@ -103,3 +100,10 @@ figures = sorted(glob.glob("benchmark_results/figures/*.png"))
 for fig_path in figures:
     print(f"\n--- {os.path.basename(fig_path)} ---")
     display(Image(filename=fig_path))
+
+# ===========================================================================
+# Cell 8: Package results for download
+# ===========================================================================
+
+# !zip -r /kaggle/working/benchmark_results.zip benchmark_results/
+# print("Download benchmark_results.zip from the Output tab")
