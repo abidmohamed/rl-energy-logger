@@ -71,7 +71,8 @@ class MetricsCollector:
                 return
 
             self._gpu_handle = pynvml.nvmlDeviceGetHandleByIndex(self.gpu_id)
-            self._gpu_name = pynvml.nvmlDeviceGetName(self._gpu_handle).decode('utf-8')
+            gpu_name = pynvml.nvmlDeviceGetName(self._gpu_handle)
+            self._gpu_name = gpu_name.decode('utf-8') if isinstance(gpu_name, bytes) else gpu_name
             logger.info("Initialized NVML. Monitoring GPU %d: %s", self.gpu_id, self._gpu_name)
 
         except pynvml.NVMLError as e:
