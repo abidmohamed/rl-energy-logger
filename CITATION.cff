@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software in your research, please cite it as below."
+authors:
+  - family-names: "Abid" # *** ***
+    given-names: "Mohamed Nadhir"  # *** ***
+    orcid: "https://orcid.org/0000-0002-6284-4036" # *** ***
+title: "RL Energy Logger: Lightweight Energy and Resource Logging for Deep Reinforcement Learning"
+version: 0.1.0 # Match pyproject.toml
+# doi: 10.5281/zenodo.XXXXXXX # *** Add after Zenodo release ***
+date-released: 2025-05-03 # *** REPLACE with release date ***
+url: "https://github.com/abidmohamed/rl-energy-logger" # *** ***
+license: MIT
+keywords:
+  - reinforcement learning
+  - energy efficiency
+  - resource monitoring
+  - machine learning
+  - python
+  - stable-baselines3
+  - pytorch
